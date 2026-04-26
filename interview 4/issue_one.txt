@@ -12,13 +12,3 @@ Requirements:
 7. Provide a tag suggestion list showing all available tags with their usage count
 8. Users should be able to remove tags from the suggestion list
 9. Validate that tag names are not empty and don't exceed 30 characters
-
-How to Test:
-1. Create a bookmark and add tags like "React", "Tutorial", "Frontend"
-2. Verify tags are displayed on the bookmark card
-3. Create multiple bookmarks with some overlapping tags
-4. View the tag suggestion list and verify usage counts are correct
-5. Click on a tag to filter bookmarks by that tag
-6. Edit a bookmark to add/remove tags and verify changes persist
-7. Verify tags are case-insensitive (adding "React" and "react" should treat them as the same tag)
-8. Verify you can remove tags from the suggestion list
