@@ -17,6 +17,21 @@ const bookmarkSchema = new mongoose.Schema(
       default: '',
       trim: true,
     },
+    tags: {
+      type: [String],
+      default: [],
+      validate: {
+        validator: function(v) {
+          return !v.some(tag => !tag || tag.length === 0 || tag.length > 30);
+        },
+        message: 'Tags must not be empty or exceed 30 characters'
+      }
+    },
+    collectionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Collection',
+      default: null,
+    },
   },
   {
     timestamps: true,

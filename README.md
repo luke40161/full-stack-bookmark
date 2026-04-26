@@ -4,19 +4,20 @@ A full-stack web application for managing and organizing bookmarks. Built with M
 
 ## Features
 
-- **Add bookmarks** with title, URL, and optional description
-- **View all bookmarks** in a sortable list (newest first)
-- **Edit bookmarks** inline with a modal form
-- **Delete bookmarks** with confirmation
+- Add bookmarks: with title, URL, and optional description
+- View all bookmarks: in a sortable list (newest first)
+- Edit bookmarks: inline with a modal form
+- Delete bookmarks: with confirmation
+- Collections: Manage a group of bookmarks
 
 ## Tech Stack
 
-**Backend:**
+:Backend::
 - Node.js + Express.js
 - MongoDB with Mongoose ODM
 - CORS-enabled REST API
 
-**Frontend:**
+:Frontend::
 - React 18 with Hooks
 - Vite build tool
 - Ant Design component library

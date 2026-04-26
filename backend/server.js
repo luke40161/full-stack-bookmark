@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const Bookmark = require('./models/bookmark.model');
+const Collection = require('./models/collection.model');
 
 dotenv.config();
 
@@ -56,7 +57,7 @@ app.post(
       });
     }
 
-    Bookmark.create({
+    const bookmark = new Bookmark({
       title,
       link,
       description,
@@ -114,6 +115,90 @@ app.delete(
     }
 
     return res.json({ message: 'Bookmark deleted successfully' });
+  }),
+);
+
+// Collections endpoints with intentional bugs
+app.get(
+  '/api/collections',
+  asyncHandler(async (req, res) => {
+    const collections = await Collection.find().sort({ createdAt: -1 });
+    res.json(collections);
+  }),
+);
+
+app.post(
+  '/api/collections',
+  asyncHandler(async (req, res) => {
+    const { name, description = '' } = req.body;
+
+    if (!name) {
+      return res.status(400).json({
+        message: 'Collection name is required.',
+      });
+    }
+
+    // BUG: Missing validation on description - accepts any length and malicious input
+    const collection = await Collection.create({
+      name,
+      description,
+      bookmarkCount: 0,
+    });
+
+    return res.status(201).json(collection);
+  }),
+);
+
+app.put(
+  '/api/collections/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { name, description = '' } = req.body;
+
+    if (!name) {
+      return res.status(400).json({
+        message: 'Collection name is required.',
+      });
+    }
+
+    const collection = await Collection.findByIdAndUpdate(
+      id,
+      { name, description },
+      { new: true, runValidators: true },
+    );
+
+    if (!collection) {
+      return res.status(404).json({
+        message: 'Collection not found.',
+      });
+    }
+
+    return res.json(collection);
+  }),
+);
+
+app.delete(
+  '/api/collections/:id',
+  asyncHandler(async (req, res) => {
+    const { id } = req.params;
+
+    const collection = await Collection.findById(id);
+
+    if (!collection) {
+      return res.status(404).json({
+        message: 'Collection not found.',
+      });
+    }
+
+    if (collection.bookmarkCount > 0) {
+      return res.status(500).json({
+        message: 'Internal server error',
+      });
+    }
+
+    await Collection.findByIdAndDelete(id);
+
+    return res.json({ message: 'Collection deleted successfully' });
   }),
 );
 

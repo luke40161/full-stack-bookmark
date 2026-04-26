@@ -1,0 +1,21 @@
+Feature: Add Search Functionality for Bookmarks
+
+Currently, users cannot search through their bookmarks. They must manually scroll through the entire list to find a specific bookmark, which is inefficient for users with many bookmarks.
+
+Requirements:
+1. Add a search input field at the top of the bookmarks list
+2. Search should filter bookmarks by title, description, or link (case-insensitive)
+3. Search should work in real-time as the user types
+4. Display "No results found" message when search returns no matches
+5. Clear the search when the user clears the input
+6. The search results should update immediately without requiring a page refresh
+7. Users should be able to edit or delete bookmarks from search results
+
+How to Test:
+1. Add several bookmarks with different titles
+2. Type in the search box to filter bookmarks
+3. Verify that bookmarks matching the search term are displayed
+4. Verify that bookmarks not matching the search term are hidden
+5. Verify that the "No results found" message appears when no bookmarks match
+6. Clear the search input and verify all bookmarks are shown again
+7. Verify that you can still edit or delete bookmarks from search results

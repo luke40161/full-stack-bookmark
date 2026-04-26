@@ -1,0 +1,24 @@
+Feature: Add Bookmark Tags/Labels System
+
+Currently, bookmarks can only be organized by collections. Add a tagging system that allows users to assign multiple tags to individual bookmarks, enabling more flexible organization and filtering.
+
+Requirements:
+1. Add a "Tags" field to bookmarks that stores an array of tags
+2. Allow users to add multiple tags when creating a bookmark
+3. Allow users to add/remove tags when editing a bookmark
+4. Display tags on each bookmark card in the UI
+5. Add filtering by tags - users should be able to click on a tag to filter bookmarks
+6. Tags should be distinct and case-insensitive (no duplicate tags like "React" and "react")
+7. Provide a tag suggestion list showing all available tags with their usage count
+8. Users should be able to remove tags from the suggestion list
+9. Validate that tag names are not empty and don't exceed 30 characters
+
+How to Test:
+1. Create a bookmark and add tags like "React", "Tutorial", "Frontend"
+2. Verify tags are displayed on the bookmark card
+3. Create multiple bookmarks with some overlapping tags
+4. View the tag suggestion list and verify usage counts are correct
+5. Click on a tag to filter bookmarks by that tag
+6. Edit a bookmark to add/remove tags and verify changes persist
+7. Verify tags are case-insensitive (adding "React" and "react" should treat them as the same tag)
+8. Verify you can remove tags from the suggestion list

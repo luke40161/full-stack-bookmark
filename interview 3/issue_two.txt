@@ -1,0 +1,24 @@
+Bug: Update Bookmark Endpoint Not Returning Updated Data
+
+The edit bookmark endpoint currently has a critical issue:
+- Users can successfully submit valid bookmark edits through the form
+- The API returns a 200 success response
+- However, the frontend does not receive the updated bookmark data from the server
+- This causes the UI to display stale data even though the database was updated
+
+How to Reproduce the Issue:
+1. Create a bookmark: "GitHub", "https://www.github.com", "Version control platform"
+2. Click the edit button on the bookmark
+3. Change the title to "GitHub - Main" and the description to "Updated description"
+4. Submit the form
+5. Observe the success message appears
+6. Observe the bookmark still shows the old data on the screen
+
+The update-bookmark endpoint must enforce the following requirements:
+   - When a bookmark is successfully updated in the database, the endpoint must return the complete updated bookmark object
+   - Include all fields: _id, title, link, description, createdAt, updatedAt
+   - The response must be the full updated document from the database, not just a success message
+   - Return a 200 status code with the updated bookmark data in the response body
+   - The frontend will use this returned data to update the UI immediately
+
+When the bookmark update is successful, return the updated bookmark object so the frontend can refresh the display with accurate data.

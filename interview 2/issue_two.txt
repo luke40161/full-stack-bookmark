@@ -1,0 +1,25 @@
+Issue: Collection Deletion Fails with Generic 500 Error When bookmarkCount is Non-Zero
+
+The collection delete endpoint has a critical error handling and UX flaw:
+- When attempting to delete a collection that contains bookmarks (bookmarkCount > 0), the endpoint returns a generic 500 error
+- The error message "Internal server error" does not explain why deletion failed
+- Users cannot understand that they must remove bookmarks before deleting the collection
+- The API checks for non-zero bookmarkCount but fails to provide clear, actionable feedback
+
+How to Reproduce the Issue:
+1. Create a collection "My Collection"
+2. Add bookmarks to the collection (bookmarkCount becomes > 0)
+3. Attempt to delete the collection
+4. Observe the server returns a 500 error with message "Internal server error"
+5. User has no clear indication that the collection contains bookmarks and cannot be deleted
+6. Try to delete an empty collection - it works, but the error messaging is inconsistent
+
+The delete-collection endpoint must enforce the following validation criteria:
+   - Check if the collection contains bookmarks (bookmarkCount > 0)
+   - Return a 409 Conflict error if deletion is blocked due to bookmarks
+   - Provide a clear, descriptive error message: "Cannot delete collection with bookmarks. Please remove all bookmarks first."
+   - Do not return generic 500 errors for business logic failures
+   - Log the actual error for debugging purposes while returning user-friendly messages
+
+When business logic prevents an operation, return appropriate HTTP status codes and clear error messages.
+

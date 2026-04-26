@@ -1,0 +1,26 @@
+Bug: Collection Statistics Not Updating After Bookmark Operations
+
+The collection statistics display has a critical issue:
+- When users add bookmarks to a collection, the collection's bookmarkCount is not updated
+- When users delete bookmarks from a collection, the collection's bookmarkCount is not updated
+- This causes the UI to display stale counts that don't match the actual number of bookmarks in the collection
+- The counts only update after a manual page refresh
+
+How to Reproduce the Issue:
+1. Create a collection "My Collection" (bookmarkCount should be 0)
+2. Create a bookmark and assign it to "My Collection"
+3. Observe the collection's bookmarkCount still shows 0 (should show 1)
+4. Delete the bookmark
+5. Observe the collection's bookmarkCount still shows 0 (correct by accident)
+6. Manually refresh the page
+7. Observe the bookmarkCount has updated correctly after the page refresh
+
+The backend must enforce the following requirements:
+   - When a bookmark is created with a collectionId, increment the associated collection's bookmarkCount
+   - When a bookmark is deleted and has a collectionId, decrement the associated collection's bookmarkCount
+   - When a bookmark is moved from one collection to another, update the bookmarkCount of both collections
+   - Return the updated collection object (with correct bookmarkCount) in the response after bookmark operations
+   - The frontend will use this data to update the collection statistics in the UI immediately
+   - Ensure bookmarkCount is always accurate and synchronized with actual bookmark count
+
+When bookmarks are added to or removed from a collection, update the collection's bookmarkCount and return the updated collection data.

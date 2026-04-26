@@ -1,0 +1,23 @@
+Issue: Missing Input Validation on Collection Description Field
+
+The collection creation and update endpoints have a critical validation vulnerability:
+- The description field is accepted without any validation on length or content
+- Users can submit extremely long descriptions that consume excessive database storage
+- Malicious input containing special characters, scripts, or injection attempts is accepted
+- No sanitization or length limits are enforced on the description field
+
+How to Reproduce the Issue:
+1. Attempt to create a collection with an extremely long description:
+   Name: "Test Collection"
+   Description: [Lots of repeated text or malicious payload]
+2. Submit the form
+3. Observe the collection is created with the massive description
+4. The malicious content is stored.
+
+The create/update-collection endpoints must enforce the following validation criteria:
+   - Description must not exceed 500 characters
+   - Return a 400 error with descriptive message if validation fails
+   - Sanitize or reject any special characters (!@#$) that could cause issues.
+
+When input validation is missing, do not save the data and return appropriate error response.
+
