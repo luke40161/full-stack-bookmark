@@ -1,0 +1,22 @@
+
+Issue: Edit Bookmark Button Not Working
+
+The bookmark edit endpoint currently exists but has a critical limitation:
+- Users can attempt to edit bookmarks with valid data
+- When an invalid or malformed bookmark ID is provided, the server returns a generic 500 error
+- There is no validation of the ID format before attempting the database operation
+- This causes the edit functionality to fail without a clear, actionable error message to the user
+
+How to Reproduce the Issue:
+1. Navigate to any bookmark in the application.
+2. Open your browser's developer tools and navigate to the Network tab.
+3. Attempt to edit a bookmark
+4. Submit the edit with valid bookmark
+5. Observe the server returns a 500 error with a generic error message.
+
+The edit-bookmark endpoint must enforce the following validation criteria for bookmark ID format:
+   - The ID must be validated as a valid MongoDB ObjectId format before attempting the database update
+   - Return a 400 error with a descriptive message if the ID format is invalid
+   - Return a 404 error if the ID format is valid but the bookmark does not exist
+   - Properly handle all database errors and return appropriate HTTP status codes
+When the ID validation fails, do not attempt the database operation and return an appropriate error response.

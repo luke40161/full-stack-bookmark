@@ -1,0 +1,22 @@
+{
+  "name": "mern-bookmarks-devcontainer",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/maged_atl_mock",
+  "runServices": ["app", "mongo"],
+  "forwardPorts": [5173, 5001, 27017],
+  "containerEnv": {
+    "MONGO_URI": "mongodb://mongo:27017/bookmarks_db",
+    "PORT": "5001",
+    "VITE_API_URL": "http://localhost:5001/api"
+  },
+  "postCreateCommand": "cd backend && npm install && cd ../frontend && npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

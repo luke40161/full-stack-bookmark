@@ -1,0 +1,26 @@
+Issue: Add Bookmark Not Functioning
+
+The bookmark creation endpoint currently exists but has a critical limitation:
+- Users can successfully submit valid bookmark data through the form
+- The API returns a 201 success response immediately
+- However, the bookmark is never actually saved to the database
+- This creates data loss issues as bookmarks are lost upon page refresh
+
+How to Reproduce the Issue:
+1. Navigate to the bookmark management interface.
+2. Attempt to add a new bookmark with valid data:
+   Title: "GitHub"
+   Link: "https://www.github.com"
+   Description: "Version control platform"
+3. Click the "Add Bookmark" button to submit the form.
+4. Observe the form returns success but the bookmark does not appear in the list.
+5. Refresh the page to verify persistence:
+   Expected: Bookmark should still be visible in the list
+   Actual: Bookmark has not been saved to the database
+
+The add-bookmark endpoint must enforce the following validation criteria for bookmark persistence:
+   - The bookmark document must be fully written to MongoDB before returning the response
+   - The complete bookmark object (including _id and timestamps) must be persisted
+   - The API must return the saved bookmark object with all database-generated fields
+
+When the bookmark is not properly persisted to the database, do not send a success response to the user.
