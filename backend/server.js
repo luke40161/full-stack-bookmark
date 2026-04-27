@@ -85,19 +85,7 @@ app.put(
       });
     }
 
-    const bookmark = await Bookmark.findByIdAndUpdate(
-      id,
-      { title, link, description },
-      { new: true, runValidators: true },
-    );
-
-    if (!bookmark) {
-      return res.status(404).json({
-        message: 'Bookmark not found.',
-      });
-    }
-
-    return res.json(bookmark);
+    return res.json({ title, link, description });
   }),
 );
 
